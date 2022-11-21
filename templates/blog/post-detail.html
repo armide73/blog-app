@@ -1,0 +1,49 @@
+{% extends 'base.html' %} {% block content %}
+{% load humanize %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 card mb-4  mt-3 left  top">
+      <div class="card-body">
+        <h1>{% block title %} {{ object.title }} {% endblock title %}</h1>
+        <p class=" text-muted">{{ object.author }} | {{ object.created_on }} | {{ object.total_likes }} likes</p>
+        <p class="card-text ">{{ object.content | safe }}</p>
+        {% if user.is_authenticated %}
+        <div class="mb-2 d-flex">
+          <div class="ml-auto">
+            <form action="{% url 'like-post' object.slug  %}" method="post">
+              {% csrf_token %}
+              {% if user not in object.likes.all %}
+              <button type="submit" name="post_slug" value="{{ object.slug }}" class="btn btn-info">Like &hearts; </button>
+              <!-- <input type="submit" value="Like &hearts;" class="btn btn-light" /> -->
+              {% else %}
+              <button type="submit" name="post_slug" value="{{ object.slug }}" class="btn btn-danger">Unlike &hearts; </button>
+              {% endif %}
+            </form>
+          </div>
+        </div>
+          {% endif %}
+         {% for comment in comments %}
+         <strong>
+          {{ comment.user }}
+         </strong>
+         <small>
+          {{comment.dateTime | naturaltime }}
+         </small>
+         <p>
+          {{comment.content}}
+         </p>
+         {%endfor%}
+         {% if user.is_authenticated %}
+       <form action="" method="post">
+        {% csrf_token %}
+        {{form.as_p}} 
+          <!-- <textarea class="form-control mb-2" placeholder="Please enter your comment" name="comment" id="" cols="10" rows="3"></textarea>   -->
+
+         <input type="submit" value="Comment" class="btn btn-info" />
+       </form>
+       {% endif %}
+      </div>
+</div>
+
+{% endblock content %}

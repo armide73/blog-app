@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+ <div class="col-md-12 mt-2 d-flex">
+ <h2>Create an account</h2> 
+ <div class="ml-auto">
+    <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
+ </div>
+ </div>
+
+ <form action="" method="POST"> 
+    {% csrf_token %}
+    {{form.as_p}}
+        <button type="submit" class="btn btn-primary">Register</button>
+    </div>
+</form>
+
+ </div>
+
+{%endblock%}
